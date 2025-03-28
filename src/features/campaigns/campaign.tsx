@@ -15,7 +15,9 @@ const getCouponContent = (
     case 'active': {
       return (
         <section className="animate-bounce">
-          <Button label="Redeem" onClick={onRedeemFn} />
+          <Button onClick={onRedeemFn}>
+            <span>Redeem</span>
+          </Button>
         </section>
       );
     }

@@ -6,14 +6,14 @@ import {
   updateDoc,
   where,
 } from 'firebase/firestore';
-import { db } from '../firebase';
+import { db } from '../firebase/firebase';
 import { CAMPAIGNS, COUPON } from '../lib/constants';
 import { Campaign, Coupon, CouponStatesType } from '../lib/types';
 
 const campaignCollectionRef = collection(db, CAMPAIGNS);
 const couponCollectionRef = collection(db, COUPON);
 
-export const getCampaigns = async () => {
+const getCampaigns = async () => {
   try {
     const data = await getDocs(campaignCollectionRef);
 
@@ -37,7 +37,7 @@ export const getCampaigns = async () => {
   }
 };
 
-export const getCouponsByCampaign = async (campaignId: string | undefined) => {
+const getCouponsByCampaign = async (campaignId: string | undefined) => {
   if (!campaignId) return [];
 
   const conditionsRef = where('campaignId', '==', campaignId);
@@ -56,10 +56,9 @@ export const getCouponsByCampaign = async (campaignId: string | undefined) => {
   });
 };
 
-export const updateCouponStateById = (
-  couponId: string,
-  state: CouponStatesType
-) => {
+const updateCouponStateById = (couponId: string, state: CouponStatesType) => {
   const couponRef = doc(db, COUPON, couponId);
   return updateDoc(couponRef, { state: state });
 };
+
+export { getCampaigns, getCouponsByCampaign, updateCouponStateById };

@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
-import { useCouponsQuery } from '../hooks/queries/use-coupons';
-import icon from '../assets/logo.svg';
-import { useCouponMutation } from '../hooks/mutations/use-coupon';
-import { CouponStatesType } from '../lib/types';
-import { Button } from '../components/ui/button';
-import { Card } from '../components/ui/card';
+import icon from '../../assets/logo.svg';
+import { CouponStatesType } from '../../lib/types';
+import { Button } from '../../components/ui/button';
+import { useCouponMutation } from '../../hooks/mutations/use-coupon';
+import { useCouponsQuery } from '../../hooks/queries/use-coupons';
+import { Card } from '../../components/ui/card';
 
 const getCouponContent = (
   title: string,
@@ -34,7 +34,7 @@ const getCouponContent = (
   }
 };
 
-export const Coupons = () => {
+export const Campaign = () => {
   const { campaignId } = useParams();
   const { data: coupons, isLoading } = useCouponsQuery(campaignId);
   const { mutate } = useCouponMutation();

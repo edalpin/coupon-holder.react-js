@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateCouponStateById } from '../../api/firebase';
+import { updateCouponStateById } from '../../services/campaigns';
 
 export const useCouponMutation = () => {
   const queryClient = useQueryClient();

@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCouponsByCampaign } from '../../api/firebase';
+import { getCouponsByCampaign } from '../../services/campaigns';
 
 export const useCouponsQuery = (campaignId: string | undefined) => {
   return useQuery({

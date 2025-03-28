@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getCampaigns } from '../../api/firebase';
+import { getCampaigns } from '../../services/campaigns';
 
 export const useCampaignsQuery = () => {
   return useQuery({

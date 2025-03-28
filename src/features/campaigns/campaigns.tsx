@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
-import { useCampaignsQuery } from '../hooks/queries/use-campaigns';
-import { Card } from '../components/ui/card';
-import { CampaignStatesType } from '../lib/types';
-import icon from '../assets/logo.svg';
+import icon from '../../assets/logo.svg';
+import { CampaignStatesType } from '../../lib/types';
+import { useCampaignsQuery } from '../../hooks/queries/use-campaigns';
+import { Card } from '../../components/ui/card';
 
 const getCampaignContent = (state: CampaignStatesType, image: string) => {
   if (state === 'redeemed') return <img src={image} alt="Reward" />;

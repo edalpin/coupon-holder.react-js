@@ -1,31 +1,50 @@
-import { JSX } from 'react';
+import type { ReactElement } from 'react';
 import { cn } from '../../lib/utils';
 
 type CardProps = {
-  content: () => JSX.Element;
+  content: () => ReactElement;
   onClick: () => void;
-  footer?: () => JSX.Element;
+  footer?: () => ReactElement;
   className?: string;
+  title?: string;
+  description?: string;
 };
 
 export const Card = (props: CardProps) => {
-  const { content, footer, onClick, className } = props;
+  const { content, footer, onClick, className, title, description } = props;
+
   return (
-    <section
+    <article
       className={cn(
         'flex flex-col justify-end aspect-square rounded-lg shadow-lg p-10 bg-white cursor-pointer',
+        'hover:shadow-xl transition-shadow duration-200',
+        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
         className
       )}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      aria-label={title}
+      aria-describedby={description ? `card-description-${title}` : undefined}
     >
-      <article className="flex h-full justify-center items-center">
-        {content()}
-      </article>
+      <div className="flex h-full justify-center items-center">{content()}</div>
+      {title && <h2 className="sr-only">{title}</h2>}
+      {description && (
+        <p id={`card-description-${title}`} className="sr-only">
+          {description}
+        </p>
+      )}
       {footer && (
-        <footer className="flex text-black justify-center text-xl font-medium">
+        <footer className="flex text-black justify-center text-xl font-medium mt-auto">
           {footer()}
         </footer>
       )}
-    </section>
+    </article>
   );
 };

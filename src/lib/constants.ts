@@ -1,6 +1,11 @@
-// General
-export const PROGRESS_COMPLETED = 100;
+// Progress constants
+export const PROGRESS = {
+  COMPLETED: 100,
+  MIN: 0,
+} as const;
 
-// DB Collections
-export const CAMPAIGNS = 'campaigns';
-export const COUPON = 'coupon';
+// Database collection names
+export const COLLECTIONS = {
+  CAMPAIGNS: 'campaigns',
+  COUPONS: 'coupons',
+} as const;

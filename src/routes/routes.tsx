@@ -39,7 +39,7 @@ const notFoundRoute: RouteConfig = {
 };
 
 export const CouponHolderRoutes = () => (
-  <BrowserRouter basename="coupon-holder">
+  <BrowserRouter basename="coupon-holder.react-js">
     <Routes>
       {/* Public Routes */}
       {publicRoutes.map(({ path, element }) => (

@@ -5,60 +5,79 @@ import {
   query,
   updateDoc,
   where,
+  DocumentData,
 } from 'firebase/firestore';
-import { db } from '../firebase/firebase';
-import { CAMPAIGNS, COUPON } from '../lib/constants';
-import { Campaign, Coupon, CouponStatesType } from '../lib/types';
+import { db } from '@/firebase/firebase';
+import { COLLECTIONS } from '@/lib/constants';
+import { Campaign, Coupon, CouponStatesType } from '@/lib/types';
 
-const campaignCollectionRef = collection(db, CAMPAIGNS);
-const couponCollectionRef = collection(db, COUPON);
+class CampaignService {
+  private readonly campaignCollection = collection(db, COLLECTIONS.CAMPAIGNS);
+  private readonly couponCollection = collection(db, COLLECTIONS.COUPONS);
 
-const getCampaigns = async () => {
-  try {
-    const data = await getDocs(campaignCollectionRef);
+  private mapCampaignData = (doc: DocumentData): Campaign => {
+    return {
+      id: doc.id,
+      title: doc.data().title,
+      reward: doc.data().reward,
+      createdAt: doc.data().createdAt,
+      redeemedAt: doc.data().redeemedAt,
+      expiredDate: doc.data().expiredDate,
+      progress: doc.data().progress,
+      state: doc.data().state,
+    };
+  };
 
-    return data.docs.map((doc) => {
-      const campaign: Campaign = {
-        id: doc.id,
-        title: doc.data().title,
-        reward: doc.data().reward,
-        createdAt: doc.data().createdAt,
-        redeemedAt: doc.data().redeemedAt,
-        expiredDate: doc.data().expiredDate,
-        progress: doc.data().progress,
-        state: doc.data().state,
-      };
-
-      return campaign;
-    });
-  } catch (error) {
-    // TODO: Handle errors
-    console.log(error);
-  }
-};
-
-const getCouponsByCampaign = async (campaignId: string | undefined) => {
-  if (!campaignId) return [];
-
-  const conditionsRef = where('campaignId', '==', campaignId);
-  const queryRef = query(couponCollectionRef, conditionsRef);
-  const data = await getDocs(queryRef);
-
-  return data.docs.map((doc) => {
-    const coupon: Coupon = {
+  private mapCouponData = (doc: DocumentData): Coupon => {
+    return {
       id: doc.id,
       title: doc.data().title,
       state: doc.data().state,
       campaignId: doc.data().campaignId,
     };
+  };
 
-    return coupon;
-  });
-};
+  getCampaigns = async (): Promise<Campaign[]> => {
+    try {
+      const snapshot = await getDocs(this.campaignCollection);
+      return snapshot.docs.map((doc) => this.mapCampaignData(doc));
+    } catch (error) {
+      console.error('Error fetching campaigns:', error);
+      throw new Error('Failed to fetch campaigns');
+    }
+  };
 
-const updateCouponStateById = (couponId: string, state: CouponStatesType) => {
-  const couponRef = doc(db, COUPON, couponId);
-  return updateDoc(couponRef, { state: state });
-};
+  getCouponsByCampaign = async (
+    campaignId: string | undefined
+  ): Promise<Coupon[]> => {
+    if (!campaignId) {
+      return [];
+    }
 
-export { getCampaigns, getCouponsByCampaign, updateCouponStateById };
+    try {
+      const conditionsRef = where('campaignId', '==', campaignId);
+      const queryRef = query(this.couponCollection, conditionsRef);
+      const snapshot = await getDocs(queryRef);
+
+      return snapshot.docs.map((doc) => this.mapCouponData(doc));
+    } catch (error) {
+      console.error('Error fetching coupons:', error);
+      throw new Error('Failed to fetch coupons');
+    }
+  };
+
+  updateCouponState = async (
+    couponId: string,
+    state: CouponStatesType
+  ): Promise<void> => {
+    try {
+      const couponRef = doc(this.couponCollection, couponId);
+      await updateDoc(couponRef, { state });
+    } catch (error) {
+      console.error('Error updating coupon state:', error);
+      throw new Error('Failed to update coupon state');
+    }
+  };
+}
+
+export const campaignService = new CampaignService();

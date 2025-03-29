@@ -1,13 +1,30 @@
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { auth } from '../firebase/firebase';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  UserCredential,
+} from 'firebase/auth';
+import { auth } from '@/firebase/firebase';
 
-const signInWithGoogle = async () => {
-  const provider = new GoogleAuthProvider();
-  return await signInWithPopup(auth, provider);
-};
+class AuthService {
+  private readonly provider = new GoogleAuthProvider();
 
-const signOut = async () => {
-  return auth.signOut();
-};
+  async signInWithGoogle(): Promise<UserCredential> {
+    try {
+      return await signInWithPopup(auth, this.provider);
+    } catch (error) {
+      console.error('Error signing in with Google:', error);
+      throw new Error('Failed to sign in with Google');
+    }
+  }
 
-export { signInWithGoogle, signOut };
+  async signOut(): Promise<void> {
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error('Error signing out:', error);
+      throw new Error('Failed to sign out');
+    }
+  }
+}
+
+export const authService = new AuthService();

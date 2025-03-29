@@ -1,16 +1,12 @@
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../contexts/auth';
-import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import { AuthContext } from '@/contexts/auth';
 
 export const useAuth = () => {
-  return useContext(AuthContext);
-};
+  const context = useContext(AuthContext);
 
-export const useSessionValidator = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
 
-  useEffect(() => {
-    if (user) navigate('/campaigns', { replace: true });
-  }, [user, navigate]);
+  return context;
 };

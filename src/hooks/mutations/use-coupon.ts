@@ -1,14 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { updateCouponStateById } from '../../services/campaigns';
+import { campaignService } from '@/services/campaigns';
+import { CouponStatesType } from '@/lib/types';
+
+interface UpdateCouponParams {
+  couponId: string;
+  state: CouponStatesType;
+}
 
 export const useCouponMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (couponId: string) =>
-      updateCouponStateById(couponId, 'redeemed'),
-    onSettled: () => {
+    mutationFn: ({ couponId, state }: UpdateCouponParams) =>
+      campaignService.updateCouponState(couponId, state),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coupons'] });
+    },
+    onError: (error) => {
+      console.error('Failed to update coupon state:', error);
     },
   });
 };

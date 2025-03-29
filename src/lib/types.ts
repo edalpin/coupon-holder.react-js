@@ -1,11 +1,13 @@
-export type CampaignStatesType = keyof typeof CampaignStates;
+// Campaign related types and enums
 export const CampaignStates = {
   inProgress: 'In Progress',
   pendingToRedeem: 'Pending To Redeem',
   redeemed: 'Redeemed',
-};
+} as const;
 
-export type Campaign = {
+export type CampaignStatesType = keyof typeof CampaignStates;
+
+export interface Campaign {
   id: string;
   title: string;
   reward: string;
@@ -14,18 +16,20 @@ export type Campaign = {
   expiredDate: Date;
   progress: number;
   state: CampaignStatesType;
-};
+}
 
-export type CouponStatesType = keyof typeof CouponStates;
+// Coupon related types and enums
 export const CouponStates = {
   blocked: 'Blocked',
   active: 'Active',
   redeemed: 'Redeemed',
-};
+} as const;
 
-export type Coupon = {
+export type CouponStatesType = keyof typeof CouponStates;
+
+export interface Coupon {
   id: string;
   title: string;
   state: CouponStatesType;
   campaignId: string;
-};
+}

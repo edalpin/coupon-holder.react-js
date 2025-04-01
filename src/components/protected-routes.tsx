@@ -3,7 +3,7 @@ import { useAuth } from '@/hooks/use-auth';
 
 const SIGN_IN_PATH = '/signin';
 
-export const ProtectedUserRoutes = () => {
+export const ProtectedRoutes = () => {
   const { user, isLoading } = useAuth();
   const location = useLocation();
 

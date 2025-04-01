@@ -7,5 +7,5 @@ export const PROGRESS = {
 // Database collection names
 export const COLLECTIONS = {
   CAMPAIGNS: 'campaigns',
-  COUPONS: 'coupons',
+  COUPONS: 'coupon',
 } as const;

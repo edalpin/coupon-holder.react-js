@@ -14,10 +14,10 @@ const queryClient = new QueryClient({
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => (
   <section
-    className="w-full min-h-screen p-20 bg-gradient-to-r from-rose-100 to-teal-100 flex"
+    className="w-full min-h-screen bg-gradient-to-r from-rose-100 to-teal-100 flex flex-col"
     role="main"
   >
-    <div className="flex-1">{children}</div>
+    {children}
   </section>
 );
 

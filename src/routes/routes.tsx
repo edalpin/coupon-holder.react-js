@@ -4,7 +4,8 @@ import { SignIn } from '@/pages/sign-in';
 import { Campaigns } from '@/pages/campaigns';
 import { Campaign } from '@/pages/campaign';
 import { NotFound } from '@/pages/not-found';
-import { ProtectedUserRoutes } from '@/components/protected-user-routes';
+import { ProtectedRoutes } from '@/components/protected-routes';
+import { ProtectedRoutesLayout } from '@/components/protected-routes-layout';
 
 type RouteConfig = {
   path: string;
@@ -47,10 +48,12 @@ export const CouponHolderRoutes = () => (
       ))}
 
       {/* Protected Routes */}
-      <Route element={<ProtectedUserRoutes />}>
-        {protectedRoutes.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
+      <Route element={<ProtectedRoutes />}>
+        <Route element={<ProtectedRoutesLayout />}>
+          {protectedRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Route>
       </Route>
 
       {/* Not Found Route */}

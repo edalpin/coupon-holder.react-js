@@ -1,42 +1,78 @@
 import { useNavigate } from 'react-router-dom';
 import icon from '@/assets/logo.svg';
-import type { CampaignStatesType } from '@/lib/types';
+import type { Campaign } from '@/lib/types';
 import { useCampaignsQuery } from '@/hooks/queries/use-campaigns';
 import { Card } from '@/components/ui/card';
-
+import { Button } from '@/components/ui/button';
 type CampaignCardProps = {
-  id: string;
-  title: string;
-  state: CampaignStatesType;
-  reward: string;
+  campaign: Campaign;
   onClick: () => void;
 };
 
-const CampaignCard = ({ title, state, reward, onClick }: CampaignCardProps) => {
+const getDaysUntilCampaignStart = (activeAt: Date) => {
+  const now = new Date();
+  const activationDate = new Date(activeAt);
+  const diffTime = Math.abs(activationDate.getTime() - now.getTime());
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+};
+
+const CampaignCard = ({ campaign, onClick }: CampaignCardProps) => {
   const getContent = () => {
-    if (state === 'redeemed') {
-      return (
-        <img
-          src={reward}
-          alt={`Reward for ${title}`}
-          className="w-full h-full object-contain"
-        />
-      );
+    switch (campaign.state) {
+      case 'redeemed':
+        return (
+          <img
+            src={campaign.reward}
+            alt={`Reward for ${campaign.title}`}
+            className="w-full h-full object-contain"
+          />
+        );
+
+      case 'completed':
+        return (
+          <img
+            src={icon}
+            className="w-full h-full object-contain animate-pulse"
+            alt={`Locked reward for ${campaign.title}`}
+          />
+        );
+
+      case 'inactive':
+      case 'active':
+      default:
+        return (
+          <img
+            src={icon}
+            className="w-full h-full grayscale object-contain"
+            alt={`Locked reward for ${campaign.title}`}
+          />
+        );
     }
-    return (
-      <img
-        src={icon}
-        className="w-full h-full grayscale object-contain"
-        alt={`Locked reward for ${title}`}
-      />
-    );
   };
 
   const getFooter = () => {
-    if (state === 'redeemed') {
-      return <p className="font-medium">{title}</p>;
+    switch (campaign.state) {
+      case 'redeemed':
+        return <p>Reward redeemed</p>;
+
+      case 'completed':
+        return (
+          <Button variant="primary" onClick={() => {}}>
+            Redeem
+          </Button>
+        );
+
+      case 'active':
+        return <p>--------</p>;
+
+      case 'inactive':
+        return (
+          <p>{`${getDaysUntilCampaignStart(campaign.activeAt)} days left`}</p>
+        );
+      default:
+        return <p>--------</p>;
     }
-    return <p className="text-gray-500">--------</p>;
   };
 
   return (
@@ -44,8 +80,8 @@ const CampaignCard = ({ title, state, reward, onClick }: CampaignCardProps) => {
       content={getContent}
       footer={getFooter}
       onClick={onClick}
-      title={title}
-      description={`Campaign status: ${state}`}
+      title={campaign.title}
+      description={`Campaign status: ${campaign.state}`}
     />
   );
 };
@@ -86,17 +122,14 @@ export const Campaigns = () => {
         Campaigns
       </header>
       <article
-        className="grid grid-cols-1 md:grid-cols-2 gap-10 animate-fade"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-10"
         role="grid"
         aria-label="Campaign list"
       >
         {campaigns.map((campaign) => (
           <CampaignCard
             key={campaign.id}
-            id={campaign.id}
-            title={campaign.title}
-            state={campaign.state}
-            reward={campaign.reward}
+            campaign={campaign}
             onClick={() => navigateToCampaignDetail(campaign.id)}
           />
         ))}

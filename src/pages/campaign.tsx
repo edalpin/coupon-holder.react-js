@@ -1,40 +1,41 @@
 import { useParams } from 'react-router-dom';
-import icon from '@/assets/logo.svg';
-import type { CouponStatesType } from '@/lib/types';
-import { Button } from '@/components/ui/button';
+import cat from '@/assets/cat.svg';
+import type { Coupon } from '@/lib/types';
 import { useCouponMutation } from '@/hooks/mutations/use-coupon';
 import { useCouponsQuery } from '@/hooks/queries/use-coupons';
 import { Card } from '@/components/ui/card';
 
 type CouponCardProps = {
-  title: string;
-  state: CouponStatesType;
+  coupon: Coupon;
   onRedeem: () => void;
 };
 
-const CouponCard = ({ title, state, onRedeem }: CouponCardProps) => {
+const CouponCard = ({ coupon, onRedeem }: CouponCardProps) => {
   const getContent = () => {
-    switch (state) {
+    switch (coupon.state) {
       case 'active': {
         return (
-          <section className="animate-bounce">
-            <Button onClick={onRedeem}>
-              <span>Redeem</span>
-            </Button>
-          </section>
+          <img
+            src={cat}
+            className="w-full h-full object-contain animate-bounce"
+            alt={`Active coupon: ${coupon.title}`}
+            onClick={onRedeem}
+          />
         );
       }
+
       case 'inactive': {
         return (
           <img
-            src={icon}
-            className="w-full grayscale cursor-not-allowed"
-            alt={`Inactive coupon: ${title}`}
+            src={cat}
+            className="w-full h-full grayscale object-contain"
+            alt={`Inactive coupon: ${coupon.title}`}
+            onClick={onRedeem}
           />
         );
       }
       case 'redeemed': {
-        return <span>{title}</span>;
+        return <span>{coupon.title}</span>;
       }
     }
   };
@@ -44,8 +45,8 @@ const CouponCard = ({ title, state, onRedeem }: CouponCardProps) => {
       className="w-full"
       content={getContent}
       onClick={() => {}}
-      title={title}
-      description={`Coupon status: ${state}`}
+      title={coupon.title}
+      description={`Coupon status: ${coupon.state}`}
     />
   );
 };
@@ -83,15 +84,14 @@ export const Campaign = () => {
         Coupons
       </header>
       <article
-        className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+        className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-5"
         role="grid"
         aria-label="Coupon list"
       >
         {coupons.map((coupon) => (
           <CouponCard
             key={coupon.id}
-            title={coupon.title}
-            state={coupon.state}
+            coupon={coupon}
             onRedeem={() =>
               redeemCoupon({ couponId: coupon.id, state: 'redeemed' })
             }

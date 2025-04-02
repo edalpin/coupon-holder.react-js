@@ -6,6 +6,7 @@ import {
   updateDoc,
   where,
   DocumentData,
+  orderBy,
 } from 'firebase/firestore';
 import { db, auth } from '@/firebase/firebase';
 import { COLLECTIONS } from '@/lib/constants';
@@ -28,7 +29,7 @@ class CampaignService {
       id: doc.id,
       title: doc.data().title,
       reward: doc.data().reward,
-      activeAt: doc.data().activeAt,
+      activeAt: doc.data().activeAt.toDate(),
       state: doc.data().state,
     };
   };
@@ -45,7 +46,8 @@ class CampaignService {
     try {
       const uid = this.getCurrentUserId();
       const whereRef = where('targets', 'array-contains', uid);
-      const queryRef = query(this.campaignCollection, whereRef);
+      const orderByRef = orderBy('state', 'asc');
+      const queryRef = query(this.campaignCollection, whereRef, orderByRef);
       const snapshot = await getDocs(queryRef);
       return snapshot.docs.map((doc) => this.mapCampaignData(doc));
     } catch (error) {

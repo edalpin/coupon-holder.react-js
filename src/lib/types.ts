@@ -1,7 +1,8 @@
 // Campaign related types and enums
 export const CampaignStates = {
-  inProgress: 'In Progress',
-  pendingToRedeem: 'Pending To Redeem',
+  active: 'Active',
+  inactive: 'Inactive',
+  completed: 'Completed',
   redeemed: 'Redeemed',
 } as const;
 
@@ -11,16 +12,13 @@ export interface Campaign {
   id: string;
   title: string;
   reward: string;
-  createdAt: Date;
-  redeemedAt: Date | undefined;
-  expiredDate: Date;
-  progress: number;
+  activeAt: Date;
   state: CampaignStatesType;
 }
 
 // Coupon related types and enums
 export const CouponStates = {
-  blocked: 'Blocked',
+  inactive: 'Inactive',
   active: 'Active',
   redeemed: 'Redeemed',
 } as const;
@@ -31,5 +29,4 @@ export interface Coupon {
   id: string;
   title: string;
   state: CouponStatesType;
-  campaignId: string;
 }

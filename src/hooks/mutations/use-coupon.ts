@@ -12,7 +12,7 @@ export const useCouponMutation = () => {
 
   return useMutation({
     mutationFn: ({ couponId, state }: UpdateCouponParams) =>
-      campaignService.updateCouponState(couponId, state),
+      campaignService.patchCouponState(couponId, state),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['coupons'] });
     },

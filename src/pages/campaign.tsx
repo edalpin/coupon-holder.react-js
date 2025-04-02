@@ -24,12 +24,12 @@ const CouponCard = ({ title, state, onRedeem }: CouponCardProps) => {
           </section>
         );
       }
-      case 'blocked': {
+      case 'inactive': {
         return (
           <img
             src={icon}
             className="w-full grayscale cursor-not-allowed"
-            alt={`Blocked coupon: ${title}`}
+            alt={`Inactive coupon: ${title}`}
           />
         );
       }

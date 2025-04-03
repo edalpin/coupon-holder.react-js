@@ -1,4 +1,5 @@
 # Coupon Holder
+![CI](https://github.com/edalpin/coupon-holder.react-js/actions/workflows/ci.yml/badge.svg)
 
 A modern web application for managing and redeeming digital coupons, built with React, TypeScript, and Firebase.
 

@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import cat from '@/assets/cat.svg';
-import type { Coupon } from '@/lib/types';
+import type { Coupon } from '@/types/domain';
 import { useCouponMutation } from '@/hooks/mutations/use-coupon';
 import { useCouponsQuery } from '@/hooks/queries/use-coupons';
 import { Card } from '@/components/ui/card';

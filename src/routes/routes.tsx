@@ -1,11 +1,13 @@
 import { type ReactElement } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SignIn } from '@/pages/sign-in';
-import { Campaigns } from '@/pages/campaigns';
-import { Campaign } from '@/pages/campaign';
+import { CampaignList } from '@/pages/campaign-list';
+import { CampaignDetail } from '@/pages/campaign-detail';
 import { NotFound } from '@/pages/not-found';
-import { ProtectedRoutes } from '@/components/protected-routes';
+import { ProtectedUserRoutes } from '@/components/protected-user-routes';
 import { ProtectedRoutesLayout } from '@/components/protected-routes-layout';
+import { ProtectedAdminRoutes } from '@/components/protected-admin-routes';
+import { CampaignCreate } from '@/pages/campaign-create';
 
 type RouteConfig = {
   path: string;
@@ -23,14 +25,21 @@ const publicRoutes: RouteConfig[] = [
   },
 ];
 
-const protectedRoutes: RouteConfig[] = [
+const protectedUserRoutes: RouteConfig[] = [
   {
     path: '/campaigns',
-    element: <Campaigns />,
+    element: <CampaignList />,
   },
   {
     path: '/campaigns/:id',
-    element: <Campaign />,
+    element: <CampaignDetail />,
+  },
+];
+
+const protectedAdminRoutes: RouteConfig[] = [
+  {
+    path: '/campaigns/create',
+    element: <CampaignCreate />,
   },
 ];
 
@@ -47,15 +56,23 @@ export const CouponHolderRoutes = () => (
         <Route key={path} path={path} element={element} />
       ))}
 
-      {/* Protected Routes */}
-      <Route element={<ProtectedRoutes />}>
+      {/* Protected User Routes */}
+      <Route element={<ProtectedUserRoutes />}>
         <Route element={<ProtectedRoutesLayout />}>
-          {protectedRoutes.map(({ path, element }) => (
+          {protectedUserRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
           ))}
         </Route>
       </Route>
 
+      {/* Protected Admin Routes */}
+      <Route element={<ProtectedAdminRoutes />}>
+        <Route element={<ProtectedRoutesLayout />}>
+          {protectedAdminRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Route>
+      </Route>
       {/* Not Found Route */}
       <Route path={notFoundRoute.path} element={notFoundRoute.element} />
     </Routes>

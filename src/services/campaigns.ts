@@ -8,21 +8,14 @@ import {
   DocumentData,
   orderBy,
 } from 'firebase/firestore';
-import { db, auth } from '@/firebase/firebase';
+import { db } from '@/firebase/firebase';
 import { COLLECTIONS } from '@/lib/constants';
 import { Campaign, Coupon, CouponStatesType } from '@/lib/types';
+import { authService } from './auth';
 
 class CampaignService {
   private readonly campaignCollection = collection(db, COLLECTIONS.CAMPAIGNS);
   private readonly couponCollection = collection(db, COLLECTIONS.COUPONS);
-
-  private getCurrentUserId = (): string => {
-    const user = auth.currentUser;
-    if (!user) {
-      throw new Error('User must be authenticated to access campaigns');
-    }
-    return user.uid;
-  };
 
   private mapCampaignData = (doc: DocumentData): Campaign => {
     return {
@@ -44,7 +37,7 @@ class CampaignService {
 
   getCampaigns = async (): Promise<Campaign[]> => {
     try {
-      const uid = this.getCurrentUserId();
+      const uid = await authService.getCurrentUserId();
       const whereRef = where('targets', 'array-contains', uid);
       const orderByRef = orderBy('state', 'asc');
       const queryRef = query(this.campaignCollection, whereRef, orderByRef);

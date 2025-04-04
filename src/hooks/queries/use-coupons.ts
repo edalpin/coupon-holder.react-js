@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import { campaignService } from '@/services/campaigns';
+import { couponService } from '@/services/coupon';
 
 export const useCouponsQuery = (campaignId: string | undefined) => {
   return useQuery({
     queryKey: ['coupons', campaignId],
-    queryFn: () => campaignService.getCouponsByCampaign(campaignId),
+    queryFn: () => couponService.getCouponsByCampaign(campaignId),
   });
 };

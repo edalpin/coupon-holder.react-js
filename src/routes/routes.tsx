@@ -8,6 +8,7 @@ import { ProtectedUserRoutes } from '@/components/protected-user-routes';
 import { ProtectedRoutesLayout } from '@/components/protected-routes-layout';
 import { ProtectedAdminRoutes } from '@/components/protected-admin-routes';
 import { CampaignCreate } from '@/pages/campaign-create';
+import { CouponCreate } from '@/pages/coupon-create';
 
 type RouteConfig = {
   path: string;
@@ -40,6 +41,10 @@ const protectedAdminRoutes: RouteConfig[] = [
   {
     path: '/campaigns/create',
     element: <CampaignCreate />,
+  },
+  {
+    path: '/campaigns/:id/coupons/create',
+    element: <CouponCreate />,
   },
 ];
 

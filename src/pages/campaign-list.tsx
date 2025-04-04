@@ -1,9 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import icon from '@/assets/logo.svg';
-import type { Campaign } from '@/lib/types';
 import { useCampaignsQuery } from '@/hooks/queries/use-campaigns';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { Campaign } from '@/types/domain';
+import { Roles } from '@/types/user';
 
 type CampaignCardProps = {
   campaign: Campaign;
@@ -108,9 +110,14 @@ const EmptyState = () => (
 export const CampaignList = () => {
   const navigate = useNavigate();
   const { data: campaigns, isLoading, isError } = useCampaignsQuery();
+  const { role } = useAuth();
 
   const navigateToCampaignDetail = (campaignId: string) => {
     navigate(`/campaigns/${campaignId}`);
+  };
+
+  const navigateToCampaignCreate = () => {
+    navigate('/campaigns/create');
   };
 
   if (isLoading) return <LoadingState />;
@@ -119,8 +126,17 @@ export const CampaignList = () => {
 
   return (
     <section className="flex flex-col gap-10">
-      <header className="font-mono font-bold text-4xl text-center">
-        Campaigns
+      <header className="flex justify-between items-center">
+        <h1 className="font-mono font-bold text-4xl">Campaigns</h1>
+        {role === Roles.admin && (
+          <Button
+            variant="primary"
+            onClick={navigateToCampaignCreate}
+            aria-label="Create new campaign"
+          >
+            Create Campaign
+          </Button>
+        )}
       </header>
       <article
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-10"

@@ -1,8 +1,8 @@
 import { onAuthStateChanged, type User } from 'firebase/auth';
 import { createContext, type ReactNode, useEffect, useState } from 'react';
 import { auth } from '@/firebase/firebase';
-import { RolesType } from '@/lib/types';
-import { authService } from '@/services/auth';
+import { type RolesType } from '@/types/user';
+import { userService } from '@/services/users';
 
 type AuthState = {
   user: User | null;
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       if (user) {
         try {
-          role = await authService.getCurrentUserRole();
+          role = await userService.getLoggedUserRole();
         } catch (error) {
           console.error('Error fetching user role:', error);
         }

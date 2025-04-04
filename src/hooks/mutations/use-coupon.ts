@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { campaignService } from '@/services/campaigns';
-import { CouponStatesType } from '@/lib/types';
+import { CouponStatesType } from '@/types/domain';
 
-interface UpdateCouponParams {
+type UpdateCouponParams = {
   couponId: string;
   state: CouponStatesType;
-}
+};
 
 export const useCouponMutation = () => {
   const queryClient = useQueryClient();

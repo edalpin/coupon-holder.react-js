@@ -7,11 +7,13 @@ import {
   where,
   DocumentData,
   orderBy,
+  setDoc,
 } from 'firebase/firestore';
 import { db } from '@/firebase/firebase';
 import { COLLECTIONS } from '@/lib/constants';
-import { Campaign, Coupon, CouponStatesType } from '@/lib/types';
+import { Campaign, Coupon, CouponStatesType } from '@/types/domain';
 import { authService } from './auth';
+import { CreateCampaignParams } from '@/hooks/mutations/use-campaign';
 
 class CampaignService {
   private readonly campaignCollection = collection(db, COLLECTIONS.CAMPAIGNS);
@@ -37,7 +39,7 @@ class CampaignService {
 
   getCampaigns = async (): Promise<Campaign[]> => {
     try {
-      const uid = await authService.getCurrentUserId();
+      const uid = await authService.getLoggedUserUid();
       const whereRef = where('targets', 'array-contains', uid);
       const orderByRef = orderBy('state', 'asc');
       const queryRef = query(this.campaignCollection, whereRef, orderByRef);
@@ -46,6 +48,15 @@ class CampaignService {
     } catch (error) {
       console.error('Error fetching campaigns:', error);
       throw new Error('Failed to fetch campaigns');
+    }
+  };
+
+  createCampaign = async (params: CreateCampaignParams): Promise<void> => {
+    try {
+      const campaignRef = doc(this.campaignCollection);
+      await setDoc(campaignRef, params);
+    } catch (error) {
+      console.error('Error creating campaign:', error);
     }
   };
 

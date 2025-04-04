@@ -16,7 +16,7 @@ export const Card = (props: CardProps) => {
   return (
     <article
       className={cn(
-        'flex flex-col justify-end rounded-lg shadow-lg p-10 bg-white cursor-pointer',
+        'flex flex-col justify-end rounded-lg shadow-lg p-10 bg-white',
         'hover:shadow-xl transition-shadow duration-200',
         'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
         className

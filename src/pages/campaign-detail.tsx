@@ -46,7 +46,7 @@ const CouponCard = ({ coupon, onRedeem }: CouponCardProps) => {
 
   return (
     <Card
-      className="w-full"
+      className={`w-full ${coupon.state === 'active' ? 'cursor-pointer' : ''}`}
       content={getContent}
       onClick={() => {}}
       title={coupon.title}
@@ -79,6 +79,12 @@ export const CampaignDetail = () => {
   const { data: coupons, isLoading, isError } = useCouponsQuery(id);
   const { mutate: redeemCoupon } = useCouponUpdateMutation();
   const { role } = useAuth();
+
+  const onRedeemCoupon = (coupon: Coupon) => {
+    if (coupon.state === 'active') {
+      redeemCoupon({ couponId: coupon.id, state: 'redeemed' });
+    }
+  };
 
   const navigateToCampaignList = () => {
     navigate('/campaigns');
@@ -117,9 +123,7 @@ export const CampaignDetail = () => {
             <CouponCard
               key={coupon.id}
               coupon={coupon}
-              onRedeem={() =>
-                redeemCoupon({ couponId: coupon.id, state: 'redeemed' })
-              }
+              onRedeem={() => onRedeemCoupon(coupon)}
             />
           ))}
         </article>

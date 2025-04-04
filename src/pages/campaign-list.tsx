@@ -47,7 +47,7 @@ const CampaignCard = ({ campaign, onClick }: CampaignCardProps) => {
         return (
           <img
             src={icon}
-            className="w-full h-full grayscale object-contain"
+            className="w-full h-full grayscale object-contain cursor-pointer"
             alt={`Locked reward for ${campaign.title}`}
           />
         );
@@ -120,10 +120,6 @@ export const CampaignList = () => {
     navigate('/campaigns/create');
   };
 
-  if (isLoading) return <LoadingState />;
-  if (isError) return <ErrorState />;
-  if (!campaigns?.length) return <EmptyState />;
-
   return (
     <section className="flex flex-col gap-10">
       <header className="flex justify-between items-center">
@@ -138,19 +134,25 @@ export const CampaignList = () => {
           </Button>
         )}
       </header>
-      <article
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-10"
-        role="grid"
-        aria-label="Campaign list"
-      >
-        {campaigns.map((campaign) => (
-          <CampaignCard
-            key={campaign.id}
-            campaign={campaign}
-            onClick={() => navigateToCampaignDetail(campaign.id)}
-          />
-        ))}
-      </article>
+      {isLoading && <LoadingState />}
+      {isError && <ErrorState />}
+      {campaigns?.length === 0 && <EmptyState />}
+
+      {campaigns && (
+        <article
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-10"
+          role="grid"
+          aria-label="Campaign list"
+        >
+          {campaigns.map((campaign) => (
+            <CampaignCard
+              key={campaign.id}
+              campaign={campaign}
+              onClick={() => navigateToCampaignDetail(campaign.id)}
+            />
+          ))}
+        </article>
+      )}
     </section>
   );
 };

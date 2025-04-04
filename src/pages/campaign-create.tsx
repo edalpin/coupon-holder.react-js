@@ -9,6 +9,7 @@ import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
 import { useCampaignCreateMutation } from '@/hooks/mutations/use-campaign';
 import { useUsersQuery } from '@/hooks/queries/use-users';
+import { ArrowLeftIcon } from 'lucide-react';
 
 const schema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -81,7 +82,12 @@ export const CampaignCreate = () => {
 
   return (
     <div className="max-w-2xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Create New Campaign</h1>
+      <header className="flex items-center mb-6 gap-4">
+        <Button variant="secondary" onClick={handleCancel} disabled={isPending}>
+          <ArrowLeftIcon className="w-4 h-4" />
+        </Button>
+        <h1 className="text-3xl font-bold">Create New Campaign</h1>
+      </header>
 
       <form
         onSubmit={handleSubmit(onSubmit)}

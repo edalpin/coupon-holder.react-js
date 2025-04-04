@@ -8,4 +8,5 @@ export const PROGRESS = {
 export const COLLECTIONS = {
   CAMPAIGNS: 'campaigns',
   COUPONS: 'coupons',
+  USERS: 'users',
 } as const;

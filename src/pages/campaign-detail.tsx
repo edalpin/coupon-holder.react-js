@@ -69,7 +69,7 @@ const EmptyState = () => (
   </div>
 );
 
-export const Campaign = () => {
+export const CampaignDetail = () => {
   const { id } = useParams();
   const { data: coupons, isLoading, isError } = useCouponsQuery(id);
   const { mutate: redeemCoupon } = useCouponMutation();

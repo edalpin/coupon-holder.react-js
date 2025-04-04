@@ -4,6 +4,7 @@ import type { Campaign } from '@/lib/types';
 import { useCampaignsQuery } from '@/hooks/queries/use-campaigns';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+
 type CampaignCardProps = {
   campaign: Campaign;
   onClick: () => void;
@@ -104,7 +105,7 @@ const EmptyState = () => (
   </div>
 );
 
-export const Campaigns = () => {
+export const CampaignList = () => {
   const navigate = useNavigate();
   const { data: campaigns, isLoading, isError } = useCampaignsQuery();
 

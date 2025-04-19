@@ -1,57 +1,45 @@
-import type { ReactNode } from 'react';
-import { cn } from '../../lib/utils';
-
-type ButtonVariant = 'primary' | 'secondary' | 'outline';
-type ButtonSize = 'sm' | 'md' | 'lg';
+import { cn } from '@/lib/utils';
 
 type ButtonProps = {
-  children: ReactNode;
-  onClick?: () => void;
-  className?: string;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
+  variant: ButtonVariants;
   disabled?: boolean;
-  type?: 'button' | 'submit' | 'reset';
-  fullWidth?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  type?: ButtonTypes;
+  onClick?: () => void;
 };
 
-const variantStyles: Record<ButtonVariant, string> = {
-  primary: 'bg-white hover:bg-gray-200 text-gray-900',
-  secondary: 'bg-gray-100 hover:bg-gray-200 text-gray-900',
-  outline: 'border-2 border-gray-300 hover:border-gray-400 text-gray-900',
-};
+type ButtonVariants = 'primary' | 'secondary';
+type ButtonTypes = 'button' | 'submit' | 'reset';
 
-const sizeStyles: Record<ButtonSize, string> = {
-  sm: 'px-3 py-1.5 text-sm',
-  md: 'px-4 py-2 text-base',
-  lg: 'px-6 py-3 text-lg',
-};
+export const Button = (props: ButtonProps) => {
+  const {
+    onClick,
+    disabled = false,
+    variant,
+    className,
+    children,
+    type = 'button',
+  } = props;
 
-export const Button = ({
-  children,
-  onClick,
-  className,
-  variant = 'primary',
-  size = 'md',
-  disabled = false,
-  type = 'button',
-  fullWidth = false,
-}: ButtonProps) => {
+  const variantStyles = {
+    primary: 'bg-primary text-black',
+    secondary: 'bg-secondary text-black',
+  };
+
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        'cursor-pointer relative inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors duration-200',
-        'focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2',
-        'disabled:opacity-50 disabled:cursor-not-allowed',
+        'flex justify-center items-center',
+        'border-2 p-2 rounded-full gap-2',
+        'cursor-pointer border-black font-bold',
         variantStyles[variant],
-        sizeStyles[size],
-        fullWidth && 'w-full',
+        disabled && 'opacity-50 cursor-not-allowed',
         className
       )}
-      aria-disabled={disabled}
     >
       {children}
     </button>

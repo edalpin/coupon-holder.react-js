@@ -1,5 +1,5 @@
-import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 const NotFoundContent = () => (
   <section
@@ -32,6 +32,7 @@ export const NotFound = () => {
       <div className="flex flex-col items-center gap-6 sm:gap-8 w-full px-4 sm:px-6">
         <NotFoundContent />
         <Button
+          variant="primary"
           onClick={() => navigate('/')}
           aria-label="Go back to home page"
           className="px-6 sm:px-8 py-2 sm:py-3 text-base sm:text-lg"

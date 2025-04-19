@@ -1,8 +1,7 @@
 import { type ReactElement } from 'react';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { SignIn } from '@/pages/sign-in';
-import { CampaignList } from '@/pages/campaign-list';
-import { CampaignDetail } from '@/pages/campaign-detail';
+import { Campaigns } from '@/pages/campaigns';
 import { NotFound } from '@/pages/not-found';
 import { ProtectedUserRoutes } from '@/components/protected-user-routes';
 import { ProtectedRoutesLayout } from '@/components/protected-routes-layout';
@@ -29,11 +28,7 @@ const publicRoutes: RouteConfig[] = [
 const protectedUserRoutes: RouteConfig[] = [
   {
     path: '/campaigns',
-    element: <CampaignList />,
-  },
-  {
-    path: '/campaigns/:id',
-    element: <CampaignDetail />,
+    element: <Campaigns />,
   },
 ];
 

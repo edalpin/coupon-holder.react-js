@@ -1,13 +1,13 @@
-import { CouponStates, CouponStatesType } from '@/types/domain';
-import { useNavigate, useParams } from 'react-router-dom';
-import { z } from 'zod';
-import { Controller, useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
-import { Button } from '@/components/ui/button';
 import { useCouponCreateMutation } from '@/hooks/mutations/use-coupon';
+import { CouponStates, CouponStatesType } from '@/types/domain';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeftIcon } from 'lucide-react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { z } from 'zod';
 const schema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
   state: z.enum(Object.keys(CouponStates) as [string, ...string[]], {
@@ -95,7 +95,7 @@ export const CouponCreate = () => {
 
         <div className="flex justify-end space-x-4 pt-6">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={handleCancel}
             type="button"
             disabled={isPending}

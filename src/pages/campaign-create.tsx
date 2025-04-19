@@ -1,15 +1,15 @@
-import { z } from 'zod';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
-import { CampaignStates, CampaignStatesType } from '@/types/domain';
-import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/loading-spinner';
+import { Button } from '@/components/ui/button';
 import { FormInput } from '@/components/ui/form-input';
 import { FormSelect } from '@/components/ui/form-select';
 import { useCampaignCreateMutation } from '@/hooks/mutations/use-campaign';
 import { useUsersQuery } from '@/hooks/queries/use-users';
+import { CampaignStates, CampaignStatesType } from '@/types/domain';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeftIcon } from 'lucide-react';
+import { Controller, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
 
 const schema = z.object({
   title: z.string().min(1, { message: 'Title is required' }),
@@ -181,7 +181,7 @@ export const CampaignCreate = () => {
 
         <div className="flex justify-end space-x-4 pt-6">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={handleCancel}
             type="button"
             disabled={isPending}

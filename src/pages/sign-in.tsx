@@ -1,12 +1,13 @@
 //import { useSessionValidator } from '@/hooks/use-auth';
-import { useAuth } from '@/hooks/use-auth';
-import { authService } from '@/services/auth';
 import googleIcon from '@/assets/google.svg';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/hooks/use-auth';
+import { authService } from '@/services/auth';
 import { Navigate, useLocation } from 'react-router-dom';
 
 const SignInButton = () => (
   <Button
+    variant="primary"
     onClick={() => authService.signInWithGoogle()}
     aria-label="Sign in with Google"
   >

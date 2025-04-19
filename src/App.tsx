@@ -13,10 +13,7 @@ const queryClient = new QueryClient({
 });
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => (
-  <section
-    className="w-full min-h-screen bg-gradient-to-r from-rose-100 to-teal-100 flex flex-col"
-    role="main"
-  >
+  <section className="w-full min-h-screen bg-background" role="main">
     {children}
   </section>
 );
